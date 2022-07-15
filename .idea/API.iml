@@ -88,6 +88,10 @@
       <excludeFolder url="file://$MODULE_DIR$/app/vendor/symfony/security-guard" />
       <excludeFolder url="file://$MODULE_DIR$/app/vendor/symfony/security-bundle" />
       <excludeFolder url="file://$MODULE_DIR$/app/vendor/psr/link" />
+      <excludeFolder url="file://$MODULE_DIR$/app/vendor/nikic/php-parser" />
+      <excludeFolder url="file://$MODULE_DIR$/app/vendor/symfony/maker-bundle" />
+      <excludeFolder url="file://$MODULE_DIR$/app/vendor/doctrine/data-fixtures" />
+      <excludeFolder url="file://$MODULE_DIR$/app/vendor/doctrine/doctrine-fixtures-bundle" />
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
