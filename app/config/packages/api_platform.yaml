@@ -5,3 +5,15 @@ api_platform:
         json: ['application/merge-patch+json']
     swagger:
         versions: [3]
+
+    # The title of the API.
+    title: 'BileMo API'
+
+    # The description of the API.
+    description: 'Avec BileMo, trouvez tous les smartphones au meilleur prix !'
+
+    # The version of the API.
+    version: '1.0'
+
+    # Set this to false if you want Webby to disappear.
+    show_webby: false
