@@ -92,6 +92,10 @@
       <excludeFolder url="file://$MODULE_DIR$/app/vendor/symfony/maker-bundle" />
       <excludeFolder url="file://$MODULE_DIR$/app/vendor/doctrine/data-fixtures" />
       <excludeFolder url="file://$MODULE_DIR$/app/vendor/doctrine/doctrine-fixtures-bundle" />
+      <excludeFolder url="file://$MODULE_DIR$/app/vendor/lexik/jwt-authentication-bundle" />
+      <excludeFolder url="file://$MODULE_DIR$/app/vendor/lcobucci/jwt" />
+      <excludeFolder url="file://$MODULE_DIR$/app/vendor/lcobucci/clock" />
+      <excludeFolder url="file://$MODULE_DIR$/app/vendor/namshi/jose" />
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
