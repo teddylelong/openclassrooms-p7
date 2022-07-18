@@ -7,6 +7,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Serializer\Annotation\SerializedName;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass=CustomerRepository::class)
@@ -22,6 +23,19 @@ class Customer implements UserInterface, PasswordAuthenticatedUserInterface
 
     /**
      * @ORM\Column(type="string", length=180, unique=true)
+     *
+     * @Assert\NotNull(
+     *     message="Le nom d'utilisateur ne peut pas être nul"
+     * )
+     * @Assert\NotBlank(
+     *     message="Le nom d'utilisateur ne peut pas être vide"
+     * )
+     * @Assert\Length(
+     *     min=1,
+     *     max=180,
+     *     minMessage="Le nom d'utilisateur doit contenir au moins {{ limit }} charactères",
+     *     maxMessage="Le nom d'utilisateur ne peut pas contenir plus de {{ limit }} charactères"
+     * )
      */
     private $username;
 
@@ -33,31 +47,103 @@ class Customer implements UserInterface, PasswordAuthenticatedUserInterface
     /**
      * @var string The hashed password
      * @ORM\Column(type="string")
+     *
+     * @Assert\NotNull(
+     *     message="Le mot de passe ne peut pas être nul"
+     * )
+     * @Assert\NotBlank(
+     *     message="Le mot de passe ne peut pas être vide"
+     * )
      */
     private $password;
 
     /**
      * @ORM\Column(type="string", length=255)
+     *
+     * @Assert\NotNull(
+     *     message="La société ne peut pas être nulle"
+     * )
+     * @Assert\NotBlank(
+     *     message="La société ne peut pas être vide"
+     * )
+     * @Assert\Length(
+     *     min=1,
+     *     max=255,
+     *     minMessage="Le nom de la société doit contenir au moins {{ limit }} charactères",
+     *     maxMessage="Le nom de la société ne peut pas contenir plus de {{ limit }} charactères"
+     * )
      */
     private $company;
 
     /**
      * @ORM\Column(type="string", length=255)
+     *
+     * @Assert\NotNull(
+     *     message="L'adresse ne peut pas être nulle"
+     * )
+     * @Assert\NotBlank(
+     *     message="L'adresse ne peut pas être vide"
+     * )
+     * @Assert\Length(
+     *     min=1,
+     *     max=255,
+     *     minMessage="L'adresse doit contenir au moins {{ limit }} charactères",
+     *     maxMessage="L'adresse ne peut pas contenir plus de {{ limit }} charactères"
+     * )
      */
     private $address;
 
     /**
      * @ORM\Column(type="string", length=255)
+     *
+     * @Assert\NotNull(
+     *     message="Le code postal ne peut pas être nul"
+     * )
+     * @Assert\NotBlank(
+     *     message="Le code postal ne peut pas être vide"
+     * )
+     * @Assert\Length(
+     *     min=1,
+     *     max=255,
+     *     minMessage="Le code postal doit contenir au moins {{ limit }} charactères",
+     *     maxMessage="Le code postal ne peut pas contenir plus de {{ limit }} charactères"
+     * )
      */
     private $zip;
 
     /**
      * @ORM\Column(type="string", length=255)
+     *
+     * @Assert\NotNull(
+     *     message="La ville ne peut pas être nulle"
+     * )
+     * @Assert\NotBlank(
+     *     message="La ville ne peut pas être vide"
+     * )
+     * @Assert\Length(
+     *     min=1,
+     *     max=255,
+     *     minMessage="La ville doit contenir au moins {{ limit }} charactères",
+     *     maxMessage="La ville ne peut pas contenir plus de {{ limit }} charactères"
+     * )
      */
     private $city;
 
     /**
      * @ORM\Column(type="string", length=255)
+     *
+     * @Assert\NotNull(
+     *     message="Le numéro de téléphone ne peut pas être nul"
+     * )
+     * @Assert\NotBlank(
+     *     message="Le numéro de téléphone ne peut pas être vide"
+     * )
+     * @Assert\Length(
+     *     min=1,
+     *     max=255,
+     *     minMessage="Le numéro de téléphone doit contenir au moins {{ limit }} charactères",
+     *     maxMessage="Le numéro de téléphone ne peut pas contenir plus de {{ limit }} charactères"
+     * )
      */
     private $phone;
 
