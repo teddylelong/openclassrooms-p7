@@ -7,7 +7,18 @@ use App\Repository\CustomerUserRepository;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * @ApiResource()
+ * @ApiResource(
+ *     collectionOperations={
+ *          "get"   ={"security"="is_granted('ROLE_USER')"},
+ *          "post"  ={"security"="is_granted('ROLE_USER')"}
+ *     },
+ *     itemOperations={
+ *          "get"   ={"security"="is_granted('USER_READ', object)"},
+ *          "put"   ={"security"="is_granted('USER_UPDATE', object)"},
+ *          "patch" ={"security"="is_granted('USER_UPDATE', object)"},
+ *          "delete"={"security"="is_granted('USER_DELETE', object)"}
+ *     }
+ * )
  * @ORM\Entity(repositoryClass=CustomerUserRepository::class)
  */
 class CustomerUser
