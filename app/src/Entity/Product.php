@@ -19,12 +19,6 @@ use Symfony\Component\Validator\Constraints as Assert;
  */
 class Product
 {
-    public function __construct()
-    {
-        $this->setCreatedAt(new \DateTimeImmutable('now'));
-        $this->setUpdatedAt(new \DateTimeImmutable('now'));
-    }
-
     /**
      * L'identifiant unique du produit
      *
@@ -126,6 +120,12 @@ class Product
      * @SerializedName("updatedAt")
      */
     private $updated_at;
+
+    public function __construct()
+    {
+        $this->setCreatedAt(new \DateTimeImmutable('now'));
+        $this->setUpdatedAt(new \DateTimeImmutable('now'));
+    }
 
     /**
      * @return int|null

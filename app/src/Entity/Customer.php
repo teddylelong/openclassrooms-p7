@@ -6,6 +6,7 @@ use App\Repository\CustomerRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Serializer\Annotation\SerializedName;
 
 /**
  * @ORM\Entity(repositoryClass=CustomerRepository::class)
@@ -59,6 +60,24 @@ class Customer implements UserInterface, PasswordAuthenticatedUserInterface
      * @ORM\Column(type="string", length=255)
      */
     private $phone;
+
+    /**
+     * @ORM\Column(type="datetime_immutable")
+     * @SerializedName("createdAt")
+     */
+    private $created_at;
+
+    /**
+     * @ORM\Column(type="datetime_immutable")
+     * @SerializedName("updatedAt")
+     */
+    private $updated_at;
+
+    public function __construct()
+    {
+        $this->setCreatedAt(new \DateTimeImmutable('now'));
+        $this->setUpdatedAt(new \DateTimeImmutable('now'));
+    }
 
     public function getId(): ?int
     {
@@ -252,6 +271,30 @@ class Customer implements UserInterface, PasswordAuthenticatedUserInterface
     public function setPhone(string $phone): self
     {
         $this->phone = $phone;
+
+        return $this;
+    }
+
+    public function getCreatedAt(): ?\DateTimeImmutable
+    {
+        return $this->created_at;
+    }
+
+    public function setCreatedAt(\DateTimeImmutable $created_at): self
+    {
+        $this->created_at = $created_at;
+
+        return $this;
+    }
+
+    public function getUpdatedAt(): ?\DateTimeImmutable
+    {
+        return $this->updated_at;
+    }
+
+    public function setUpdatedAt(\DateTimeImmutable $updated_at): self
+    {
+        $this->updated_at = $updated_at;
 
         return $this;
     }
