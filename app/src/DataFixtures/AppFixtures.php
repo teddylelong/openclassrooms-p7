@@ -2,12 +2,21 @@
 
 namespace App\DataFixtures;
 
+use App\Entity\Customer;
 use App\Entity\Product;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
+use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 
 class AppFixtures extends Fixture
 {
+    private $hasher;
+
+    public function __construct(UserPasswordHasherInterface $hasher)
+    {
+        $this->hasher = $hasher;
+    }
+
     public function load(ObjectManager $manager): void
     {
         $iPhone12 = (new Product())
@@ -57,6 +66,19 @@ class AppFixtures extends Fixture
             ->setPrice(799)
         ;
         $manager->persist($samsungS22);
+
+
+        $customer = new Customer();
+        $customer->setUsername('api');
+        $customer->setPassword($this->hasher->hashPassword($customer, 'api'));
+        $customer->setRoles(['ROLE_ADMIN']);
+        $customer->setAddress('123, Rue Paradis');
+        $customer->setZip('75012');
+        $customer->setCity('Paris');
+        $customer->setCompany('BileMo SAS');
+        $customer->setPhone('+33 1 02 03 04 05');
+
+        $manager->persist($customer);
 
         $manager->flush();
     }
