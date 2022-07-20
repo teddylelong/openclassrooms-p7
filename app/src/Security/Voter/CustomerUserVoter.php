@@ -78,7 +78,7 @@ class CustomerUserVoter extends Voter
      */
     private function canCreate(UserInterface $user, CustomerUser $customerUser): bool
     {
-        if ($customerUser->getCustomer() === $user) {
+        if ($this->security->isGranted('ROLE_USER', $user)) {
             return true;
         }
         return false;
