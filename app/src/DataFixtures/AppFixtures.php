@@ -3,6 +3,7 @@
 namespace App\DataFixtures;
 
 use App\Entity\Customer;
+use App\Entity\CustomerUser;
 use App\Entity\Product;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
@@ -19,6 +20,10 @@ class AppFixtures extends Fixture
 
     public function load(ObjectManager $manager): void
     {
+        /**
+         * Phones
+         */
+
         $iPhone12 = (new Product())
             ->setName('iPhone 12')
             ->setBrand('Apple')
@@ -68,6 +73,10 @@ class AppFixtures extends Fixture
         $manager->persist($samsungS22);
 
 
+        /**
+         * Customers
+         */
+
         $customer = new Customer();
         $customer->setUsername('api');
         $customer->setPassword($this->hasher->hashPassword($customer, 'api'));
@@ -79,6 +88,25 @@ class AppFixtures extends Fixture
         $customer->setPhone('+33 1 02 03 04 05');
 
         $manager->persist($customer);
+
+
+        /**
+         * CustomersUsers
+         */
+
+        $user1 = (new CustomerUser())
+            ->setFirstname('Teddy')
+            ->setLastname('Lelong')
+            ->setCustomer($customer)
+        ;
+        $manager->persist($user1);
+
+        $user2 = (new CustomerUser())
+            ->setFirstname('Aurélien')
+            ->setLastname('Vernet')
+            ->setCustomer($customer)
+        ;
+        $manager->persist($user2);
 
         $manager->flush();
     }

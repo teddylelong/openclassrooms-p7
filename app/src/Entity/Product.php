@@ -5,14 +5,32 @@ namespace App\Entity;
 use ApiPlatform\Core\Annotation\ApiResource;
 use App\Repository\ProductRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Serializer\Annotation\SerializedName;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ApiResource(
- *     collectionOperations={"get"},
- *     itemOperations = {"get"},
- *     attributes={"force_eager"=false}
+ *     normalizationContext={"groups"={"product:read"}, "swagger_definition_name"="Read"},
+ *     collectionOperations={
+ *          "get"={
+ *              "openapi_context"={
+ *                  "summary"="Retourne la liste de tous les produits BileMo",
+ *                  "description"="Retour la liste de tous les produits et affiche tous leurs détails."
+ *              }
+ *          }
+ *     },
+ *     itemOperations = {
+ *          "get"={
+ *              "openapi_context"={
+ *                  "summary"="Retourne un produit BileMo",
+ *                  "description"="Retourne un produit BileMo et affiche l'ensemble de ses détails."
+ *              }
+ *          }
+ *      },
+ *     attributes={
+ *          "pagination_items_per_page"=15
+ *     }
  * )
  *
  * @ORM\Entity(repositoryClass=ProductRepository::class)
@@ -25,6 +43,7 @@ class Product
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
+     * @Groups({"product:read"})
      */
     private $id;
 
@@ -32,6 +51,7 @@ class Product
      * Le nom du produit
      *
      * @ORM\Column(type="string", length=255)
+     * @Groups({"product:read"})
      *
      * @Assert\NotBlank(
      *     message="Le nom du produit ne peut pas être vide"
@@ -52,6 +72,7 @@ class Product
      * La marque du produit
      *
      * @ORM\Column(type="string", length=255)
+     * @Groups({"product:read"})
      *
      * @Assert\NotBlank(
      *     message="La marque du produit ne peut pas être vide"
@@ -72,6 +93,7 @@ class Product
      * La description du produit
      *
      * @ORM\Column(type="text")
+     * @Groups({"product:read"})
      *
      * @Assert\NotBlank(
      *     message="La description du produit ne peut pas être vide"
@@ -86,6 +108,7 @@ class Product
      * Le prix du produit (valeur numérique)
      *
      * @ORM\Column(type="decimal", precision=7, scale=2)
+     * @Groups({"product:read"})
      *
      * @Assert\NotBlank(
      *     message="Le prix du produit ne peut pas être vide"
@@ -109,7 +132,8 @@ class Product
      * La date et l'heure de création du produit
      *
      * @ORM\Column(type="datetime_immutable")
-     * @SerializedName("createdAt")
+     * @Groups({"product:read"})
+     * @SerializedName("created_at")
      */
     private $created_at;
 
@@ -117,7 +141,8 @@ class Product
      * La date et l'heure de la dernière modification du produit
      *
      * @ORM\Column(type="datetime_immutable")
-     * @SerializedName("updatedAt")
+     * @Groups({"product:read"})
+     * @SerializedName("updated_at")
      */
     private $updated_at;
 
