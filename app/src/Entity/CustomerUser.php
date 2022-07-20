@@ -7,6 +7,7 @@ use App\Repository\CustomerUserRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Serializer\Annotation\SerializedName;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ApiResource(
@@ -43,8 +44,20 @@ class CustomerUser
      * Le prénom de l'utilisateur
      *
      * @ORM\Column(type="string", length=255)
-     *
      * @Groups({"customer:read", "customer:write"})
+     *
+     * @Assert\NotBlank(
+     *     message="Le prénom ne peut pas être vide"
+     * )
+     * @Assert\NotNull(
+     *     message="Le prenom ne peut pas être nul"
+     * )
+     * @Assert\Length(
+     *     min=1,
+     *     max=255,
+     *     minMessage="Le prénom doit au moins contenir {{ limit }} caractères",
+     *     maxMessage="Le prénom ne peut pas dépasser {{ limit }} caractères"
+     * )
      */
     private $firstname;
 
@@ -52,8 +65,20 @@ class CustomerUser
      * Le nom de famille de l'utilisateur
      *
      * @ORM\Column(type="string", length=255)
-     *
      * @Groups({"customer:read", "customer:write"})
+     *
+     * @Assert\NotBlank(
+     *     message="Le nom de famille ne peut pas être vide"
+     * )
+     * @Assert\NotNull(
+     *     message="Le nom de famille ne peut pas être nul"
+     * )
+     * @Assert\Length(
+     *     min=1,
+     *     max=255,
+     *     minMessage="Le nom de famille doit au moins contenir {{ limit }} caractères",
+     *     maxMessage="Le nom de famille ne doit pas dépasser {{ limit }} caractères"
+     * )
      */
     private $lastname;
 
@@ -61,7 +86,6 @@ class CustomerUser
      * La date et l'heure de création de l'utilisateur
      *
      * @ORM\Column(type="datetime_immutable")
-     *
      * @Groups({"customer:read"})
      */
     private $created_at;
@@ -70,7 +94,6 @@ class CustomerUser
      * La date et l'heure de la dernière modification de l'utilisateur
      *
      * @ORM\Column(type="datetime_immutable")
-     *
      * @Groups({"customer:read"})
      */
     private $updated_at;
