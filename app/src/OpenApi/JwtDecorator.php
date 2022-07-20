@@ -67,8 +67,8 @@ final class JwtDecorator implements OpenApiFactoryInterface
                         ],
                     ],
                 ],
-                'Return JWT token to login',
-                '',
+                'Retourne un token JWT afin de s\'authentifier',
+                'Retourne un token JWT afin de s\'authentifier',
                 null,
                 [],
                 new Model\RequestBody(

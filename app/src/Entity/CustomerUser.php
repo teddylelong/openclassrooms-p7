@@ -14,14 +14,50 @@ use Symfony\Component\Validator\Constraints as Assert;
  *     normalizationContext={"groups"={"customer:read"}, "swagger_definition_name"="Read"},
  *     denormalizationContext={"groups"={"customer:write"}, "swagger_definition_name"="Write"},
  *     collectionOperations={
- *          "get"   ={"security"="is_granted('ROLE_USER', object)"},
- *          "post"  ={"security"="is_granted('ROLE_USER', object)"}
+ *          "get"={
+ *              "security"="is_granted('ROLE_USER', object)",
+ *              "openapi_context"={
+ *                  "summary"="Retourne la liste de tous les utilisateurs liés au client actuellement authentifié",
+ *                  "description"="Retourne la liste de tous les utilisateurs liés à votre compte client. **Vous ne pouvez pas accéder aux utilisateurs qui ne sont pas lié à votre compte client**."
+ *              }
+ *          },
+ *          "post"={
+ *              "security"="is_granted('ROLE_USER', object)",
+ *              "openapi_context"={
+ *                  "summary"="Créé un nouvel utilisateur automatiquement lié au client actuellement authentifié",
+ *                  "description"="Créé un nouvel utilisateur. **Il sera automatiquement lié à votre compte client**."
+ *              }
+ *          }
  *     },
  *     itemOperations={
- *          "get"   ={"security"="is_granted('USER_READ', object)"},
- *          "put"   ={"security"="is_granted('USER_UPDATE', object)"},
- *          "patch" ={"security"="is_granted('USER_UPDATE', object)"},
- *          "delete"={"security"="is_granted('USER_DELETE', object)"}
+ *          "get"={
+ *              "security"="is_granted('USER_READ', object)",
+ *              "openapi_context"={
+ *                  "summary"="Retourne un utilisateur lié à votre compte client et affiche ses détails",
+ *                  "description"="Retourne un utilisateur et ses informations détaillées. **Vous ne pouvez pas accéder aux utilisateurs qui ne sont pas lié à votre compte client**."
+ *              }
+ *          },
+ *          "put"={
+ *              "security"="is_granted('USER_UPDATE', object)",
+ *              "openapi_context"={
+ *                  "summary"="Modifie l'intégralité des informations d'un utilisateur lié à votre compte client",
+ *                  "description"="Modifie **toutes** les informations d'un utilisateur. **Vous ne pouvez pas modifier un utilisateur qui n'est pas lié à votre compte client**."
+ *              }
+ *          },
+ *          "patch"={
+ *              "security"="is_granted('USER_UPDATE', object)",
+ *              "openapi_context"={
+ *                  "summary"="Modifie partiellement les informations d'un utilisateur lié à votre compte client",
+ *                  "description"="Modifie **uniquement les informations spécifiées dans la requête** d'un utilisateur. **Vous ne pouvez pas modifier un utilisateur qui n'est pas lié à votre compte client**."
+ *              }
+ *          },
+ *          "delete"={
+ *              "security"="is_granted('USER_DELETE', object)",
+ *              "openapi_context"={
+ *                  "summary"="Supprime un utilisateur lié à votre compte client",
+ *                  "description"="Supprime un utilisateur lié à votre compte client de façon **définitive**. L'utilisateur supprimé ne pourra pas être récupéré. **Vous ne pouvez pas supprimer un utilisateur qui n'est pas lié à votre compte client**."
+ *              }
+ *          }
  *     }
  * )
  * @ORM\Entity(repositoryClass=CustomerUserRepository::class)
