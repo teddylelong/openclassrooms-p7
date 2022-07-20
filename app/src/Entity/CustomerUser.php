@@ -5,12 +5,16 @@ namespace App\Entity;
 use ApiPlatform\Core\Annotation\ApiResource;
 use App\Repository\CustomerUserRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
+use Symfony\Component\Serializer\Annotation\SerializedName;
 
 /**
  * @ApiResource(
+ *     normalizationContext={"groups"={"customer:read"}, "swagger_definition_name"="Read"},
+ *     denormalizationContext={"groups"={"customer:write"}, "swagger_definition_name"="Write"},
  *     collectionOperations={
- *          "get"   ={"security"="is_granted('ROLE_USER')"},
- *          "post"  ={"security"="is_granted('ROLE_USER')"}
+ *          "get"   ={"security"="is_granted('ROLE_USER', object)"},
+ *          "post"  ={"security"="is_granted('ROLE_USER', object)"}
  *     },
  *     itemOperations={
  *          "get"   ={"security"="is_granted('USER_READ', object)"},
@@ -29,6 +33,8 @@ class CustomerUser
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
+     *
+     * @Groups({"customer:read"})
      */
     private $id;
 
@@ -36,6 +42,8 @@ class CustomerUser
      * Le prénom de l'utilisateur
      *
      * @ORM\Column(type="string", length=255)
+     *
+     * @Groups({"customer:read", "customer:write"})
      */
     private $firstname;
 
@@ -43,6 +51,8 @@ class CustomerUser
      * Le nom de famille de l'utilisateur
      *
      * @ORM\Column(type="string", length=255)
+     *
+     * @Groups({"customer:read", "customer:write"})
      */
     private $lastname;
 
@@ -50,6 +60,8 @@ class CustomerUser
      * La date et l'heure de création de l'utilisateur
      *
      * @ORM\Column(type="datetime_immutable")
+     *
+     * @Groups({"customer:read"})
      */
     private $created_at;
 
@@ -57,6 +69,8 @@ class CustomerUser
      * La date et l'heure de la dernière modification de l'utilisateur
      *
      * @ORM\Column(type="datetime_immutable")
+     *
+     * @Groups({"customer:read"})
      */
     private $updated_at;
 
@@ -64,6 +78,8 @@ class CustomerUser
      * L'identifiant du Client lié à l'utilisateur
      *
      * @ORM\ManyToOne(targetEntity=Customer::class)
+     * @Groups({"customer:read", "customer:write"})
+     * @SerializedName("linked_customer")
      */
     private $customer;
 

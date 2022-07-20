@@ -2,10 +2,12 @@
 
 namespace App\Entity;
 
+use ApiPlatform\Core\Annotation\ApiProperty;
 use App\Repository\CustomerRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Serializer\Annotation\SerializedName;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -18,6 +20,7 @@ class Customer implements UserInterface, PasswordAuthenticatedUserInterface
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
+     * @ApiProperty(security="is_granted('ROLE_ADMIN')")
      */
     private $id;
 
@@ -59,6 +62,7 @@ class Customer implements UserInterface, PasswordAuthenticatedUserInterface
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Groups({"customer:read"})
      *
      * @Assert\NotNull(
      *     message="La société ne peut pas être nulle"
@@ -77,6 +81,7 @@ class Customer implements UserInterface, PasswordAuthenticatedUserInterface
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Groups({"customer:read"})
      *
      * @Assert\NotNull(
      *     message="L'adresse ne peut pas être nulle"
@@ -95,6 +100,7 @@ class Customer implements UserInterface, PasswordAuthenticatedUserInterface
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Groups({"customer:read"})
      *
      * @Assert\NotNull(
      *     message="Le code postal ne peut pas être nul"
@@ -113,6 +119,7 @@ class Customer implements UserInterface, PasswordAuthenticatedUserInterface
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Groups({"customer:read"})
      *
      * @Assert\NotNull(
      *     message="La ville ne peut pas être nulle"
@@ -131,6 +138,7 @@ class Customer implements UserInterface, PasswordAuthenticatedUserInterface
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Groups({"customer:read"})
      *
      * @Assert\NotNull(
      *     message="Le numéro de téléphone ne peut pas être nul"

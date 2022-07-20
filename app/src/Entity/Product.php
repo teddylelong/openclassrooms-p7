@@ -12,7 +12,10 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @ApiResource(
  *     collectionOperations={"get"},
  *     itemOperations = {"get"},
- *     attributes={"force_eager"=false}
+ *     attributes={
+ *          "force_eager"=false,
+ *          "pagination_items_per_page"=15
+ *     }
  * )
  *
  * @ORM\Entity(repositoryClass=ProductRepository::class)
