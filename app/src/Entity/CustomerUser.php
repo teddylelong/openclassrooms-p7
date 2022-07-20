@@ -24,6 +24,7 @@ use Symfony\Component\Serializer\Annotation\SerializedName;
  *     }
  * )
  * @ORM\Entity(repositoryClass=CustomerUserRepository::class)
+ * @ORM\EntityListeners({"App\Doctrine\CustomerUserListener"})
  */
 class CustomerUser
 {
@@ -78,7 +79,7 @@ class CustomerUser
      * L'identifiant du Client lié à l'utilisateur
      *
      * @ORM\ManyToOne(targetEntity=Customer::class)
-     * @Groups({"customer:read", "customer:write"})
+     * @Groups({"customer:read"})
      * @SerializedName("linked_customer")
      */
     private $customer;
