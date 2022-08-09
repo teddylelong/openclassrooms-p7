@@ -3,7 +3,10 @@
 namespace App\Entity;
 
 use ApiPlatform\Core\Annotation\ApiProperty;
+use ApiPlatform\Core\Annotation\ApiResource;
+use ApiPlatform\Core\Annotation\ApiSubresource;
 use App\Repository\CustomerRepository;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
@@ -12,7 +15,34 @@ use Symfony\Component\Serializer\Annotation\SerializedName;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
+ * @TODO: Security dans subresourceOperations ne fonctionne pas
+ *
  * @ORM\Entity(repositoryClass=CustomerRepository::class)
+ * @ApiResource(
+ *     normalizationContext={"groups"={"admin:read"}, "swagger_definition_name"="Read"},
+ *     denormalizationContext={"groups"={"admin:write"}, "swagger_definition_name"="Write"},
+ *     collectionOperations={
+ *     },
+ *     itemOperations={
+ *          "get"={
+ *              "security"="is_granted('ROLE_ADMIN', object)",
+ *              "openapi_context"={
+ *                  "summary"="(Réservé aux administrateurs) Retourne les informations d'un compte client et ses utilisateurs liés",
+ *                  "description"="Retourne les informations d'un compte client et ses utilisateurs liés. **Vous devez être administrateur pour accéder à cette fonctionnalité.**."
+ *              }
+ *          },
+ *     },
+ *     subresourceOperations={
+ *          "customers_users_get_subresource"={
+ *              "method"="GET",
+ *              "security"="is_granted('ROLE_ADMIN', object)",
+ *              "openapi_context"={
+ *                  "summary"="(Réservé aux administrateurs) Retourne tous les utilisateurs liés au compte client spécifié",
+ *                  "description"="Retourne tous les utilisateurs liés au compte client spécifié. **Vous devez être administrateur pour accéder à cette fonctionnalité.**."
+ *              }
+ *          },
+ *     }
+ * )
  */
 class Customer implements UserInterface, PasswordAuthenticatedUserInterface
 {
@@ -21,6 +51,7 @@ class Customer implements UserInterface, PasswordAuthenticatedUserInterface
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
      * @ApiProperty(security="is_granted('ROLE_ADMIN')")
+     * @Groups({"admin:read"})
      */
     private $id;
 
@@ -39,11 +70,13 @@ class Customer implements UserInterface, PasswordAuthenticatedUserInterface
      *     minMessage="Le nom d'utilisateur doit contenir au moins {{ limit }} charactères",
      *     maxMessage="Le nom d'utilisateur ne peut pas contenir plus de {{ limit }} charactères"
      * )
+     * @Groups({"admin:read"})
      */
     private $username;
 
     /**
      * @ORM\Column(type="json")
+     * @Groups({"admin:read"})
      */
     private $roles = [];
 
@@ -62,7 +95,7 @@ class Customer implements UserInterface, PasswordAuthenticatedUserInterface
 
     /**
      * @ORM\Column(type="string", length=255)
-     * @Groups({"customer:read"})
+     * @Groups({"customer:read", "admin:read"})
      *
      * @Assert\NotNull(
      *     message="La société ne peut pas être nulle"
@@ -81,7 +114,7 @@ class Customer implements UserInterface, PasswordAuthenticatedUserInterface
 
     /**
      * @ORM\Column(type="string", length=255)
-     * @Groups({"customer:read"})
+     * @Groups({"customer:read", "admin:read"})
      *
      * @Assert\NotNull(
      *     message="L'adresse ne peut pas être nulle"
@@ -100,7 +133,7 @@ class Customer implements UserInterface, PasswordAuthenticatedUserInterface
 
     /**
      * @ORM\Column(type="string", length=255)
-     * @Groups({"customer:read"})
+     * @Groups({"customer:read", "admin:read"})
      *
      * @Assert\NotNull(
      *     message="Le code postal ne peut pas être nul"
@@ -119,7 +152,7 @@ class Customer implements UserInterface, PasswordAuthenticatedUserInterface
 
     /**
      * @ORM\Column(type="string", length=255)
-     * @Groups({"customer:read"})
+     * @Groups({"customer:read", "admin:read"})
      *
      * @Assert\NotNull(
      *     message="La ville ne peut pas être nulle"
@@ -138,7 +171,7 @@ class Customer implements UserInterface, PasswordAuthenticatedUserInterface
 
     /**
      * @ORM\Column(type="string", length=255)
-     * @Groups({"customer:read"})
+     * @Groups({"customer:read", "admin:read"})
      *
      * @Assert\NotNull(
      *     message="Le numéro de téléphone ne peut pas être nul"
@@ -158,14 +191,25 @@ class Customer implements UserInterface, PasswordAuthenticatedUserInterface
     /**
      * @ORM\Column(type="datetime_immutable")
      * @SerializedName("createdAt")
+     * @Groups({"admin:read"})
      */
     private $created_at;
 
     /**
      * @ORM\Column(type="datetime_immutable")
      * @SerializedName("updatedAt")
+     * @Groups({"admin:read"})
      */
     private $updated_at;
+
+    /**
+     * @ORM\OneToMany(targetEntity=CustomerUser::class, mappedBy="customer", cascade={"persist"}, orphanRemoval=true)
+     * @ORM\JoinColumn(onDelete="SET NULL")
+     * @ApiSubresource()
+     * @SerializedName("customer_users")
+     * @Groups({"admin:read"})
+     */
+    private $customersUsers;
 
     public function __construct()
     {
@@ -389,6 +433,44 @@ class Customer implements UserInterface, PasswordAuthenticatedUserInterface
     public function setUpdatedAt(\DateTimeImmutable $updated_at): self
     {
         $this->updated_at = $updated_at;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, CustomerUser>
+     */
+    public function getCustomersUsers(): Collection
+    {
+        return $this->customersUsers;
+    }
+
+    /**
+     * @param CustomerUser $customerUser
+     * @return $this
+     */
+    public function addCustomersUser(CustomerUser $customerUser): self
+    {
+        if (!$this->customersUsers->contains($customerUser)) {
+            $this->customersUsers[] = $customerUser;
+            $customerUser->setCustomer($this);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @param CustomerUser $customerUser
+     * @return $this
+     */
+    public function removeCustomersUser(CustomerUser $customerUser): self
+    {
+        if ($this->customersUsers->removeElement($customerUser)) {
+            // set the owning side to null (unless already changed)
+            if ($customerUser->getCustomer() === $this) {
+                $customerUser->setCustomer(null);
+            }
+        }
 
         return $this;
     }

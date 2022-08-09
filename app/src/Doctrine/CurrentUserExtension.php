@@ -7,6 +7,7 @@ use ApiPlatform\Core\Bridge\Doctrine\Orm\Extension\QueryItemExtensionInterface;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Util\QueryNameGeneratorInterface;
 use App\Entity\CustomerUser;
 use Doctrine\ORM\QueryBuilder;
+use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\Security\Core\Security;
 
 /**
@@ -16,12 +17,16 @@ final class CurrentUserExtension implements QueryCollectionExtensionInterface, Q
 {
     private $security;
 
+    private $request;
+
     /**
      * @param Security $security
+     * @param RequestStack $request
      */
-    public function __construct(Security $security)
+    public function __construct(Security $security, RequestStack $request)
     {
         $this->security = $security;
+        $this->request = $request;
     }
 
     /**
@@ -57,9 +62,13 @@ final class CurrentUserExtension implements QueryCollectionExtensionInterface, Q
      */
     private function andWhere(QueryBuilder $queryBuilder, string $resourceClass): void
     {
-        if (CustomerUser::class !== $resourceClass || $this->security->isGranted('ROLE_ADMIN') || null === $user = $this->security->getUser()) {
+        if (CustomerUser::class !== $resourceClass ||  null === $user = $this->security->getUser()) {
             return;
         }
+
+        /*if ($this->security->isGranted('ROLE_ADMIN') && $this->request->getCurrentRequest()->attributes->get('_route') === 'customers_users_get_subresource') {
+            die();
+        }*/
 
         $rootAlias = $queryBuilder->getRootAliases()[0];
         $queryBuilder->andWhere(sprintf('%s.customer = :current_user', $rootAlias));
