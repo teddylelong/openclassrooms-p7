@@ -21,3 +21,15 @@ api_platform:
 
     # Set this to false if you want Webby to disappear.
     show_webby: false
+
+    # Enable HTTP Cache system
+    http_cache:
+        invalidation:
+            enabled: true
+            varnish_urls: ['%env(VARNISH_URL)%']
+        public: true
+    defaults:
+        cache_headers:
+            max_age: 0
+            shared_max_age: 3600
+            vary: ['Content-Type', 'Authorization', 'Origin']
