@@ -21,6 +21,11 @@ class CustomerUserRepository extends ServiceEntityRepository
         parent::__construct($registry, CustomerUser::class);
     }
 
+    /**
+     * @param CustomerUser $entity
+     * @param bool $flush
+     * @return void
+     */
     public function add(CustomerUser $entity, bool $flush = false): void
     {
         $this->getEntityManager()->persist($entity);
@@ -30,6 +35,11 @@ class CustomerUserRepository extends ServiceEntityRepository
         }
     }
 
+    /**
+     * @param CustomerUser $entity
+     * @param bool $flush
+     * @return void
+     */
     public function remove(CustomerUser $entity, bool $flush = false): void
     {
         $this->getEntityManager()->remove($entity);
@@ -38,29 +48,4 @@ class CustomerUserRepository extends ServiceEntityRepository
             $this->getEntityManager()->flush();
         }
     }
-
-//    /**
-//     * @return CustomerUser[] Returns an array of CustomerUser objects
-//     */
-//    public function findByExampleField($value): array
-//    {
-//        return $this->createQueryBuilder('c')
-//            ->andWhere('c.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->orderBy('c.id', 'ASC')
-//            ->setMaxResults(10)
-//            ->getQuery()
-//            ->getResult()
-//        ;
-//    }
-
-//    public function findOneBySomeField($value): ?CustomerUser
-//    {
-//        return $this->createQueryBuilder('c')
-//            ->andWhere('c.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->getQuery()
-//            ->getOneOrNullResult()
-//        ;
-//    }
 }

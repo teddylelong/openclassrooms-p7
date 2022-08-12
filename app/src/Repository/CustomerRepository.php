@@ -24,6 +24,11 @@ class CustomerRepository extends ServiceEntityRepository implements PasswordUpgr
         parent::__construct($registry, Customer::class);
     }
 
+    /**
+     * @param Customer $entity
+     * @param bool $flush
+     * @return void
+     */
     public function add(Customer $entity, bool $flush = false): void
     {
         $this->getEntityManager()->persist($entity);
@@ -33,6 +38,11 @@ class CustomerRepository extends ServiceEntityRepository implements PasswordUpgr
         }
     }
 
+    /**
+     * @param Customer $entity
+     * @param bool $flush
+     * @return void
+     */
     public function remove(Customer $entity, bool $flush = false): void
     {
         $this->getEntityManager()->remove($entity);
@@ -44,6 +54,10 @@ class CustomerRepository extends ServiceEntityRepository implements PasswordUpgr
 
     /**
      * Used to upgrade (rehash) the user's password automatically over time.
+     *
+     * @param PasswordAuthenticatedUserInterface $user
+     * @param string $newHashedPassword
+     * @return void
      */
     public function upgradePassword(PasswordAuthenticatedUserInterface $user, string $newHashedPassword): void
     {
@@ -55,29 +69,4 @@ class CustomerRepository extends ServiceEntityRepository implements PasswordUpgr
 
         $this->add($user, true);
     }
-
-//    /**
-//     * @return Customer[] Returns an array of Customer objects
-//     */
-//    public function findByExampleField($value): array
-//    {
-//        return $this->createQueryBuilder('c')
-//            ->andWhere('c.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->orderBy('c.id', 'ASC')
-//            ->setMaxResults(10)
-//            ->getQuery()
-//            ->getResult()
-//        ;
-//    }
-
-//    public function findOneBySomeField($value): ?Customer
-//    {
-//        return $this->createQueryBuilder('c')
-//            ->andWhere('c.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->getQuery()
-//            ->getOneOrNullResult()
-//        ;
-//    }
 }
