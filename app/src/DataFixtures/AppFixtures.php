@@ -78,8 +78,8 @@ class AppFixtures extends Fixture
          */
 
         $customer = new Customer();
-        $customer->setUsername('api');
-        $customer->setPassword($this->hasher->hashPassword($customer, 'api'));
+        $customer->setUsername('admin');
+        $customer->setPassword($this->hasher->hashPassword($customer, 'admin'));
         $customer->setRoles(['ROLE_ADMIN']);
         $customer->setAddress('123, Rue Paradis');
         $customer->setZip('75012');
@@ -89,24 +89,43 @@ class AppFixtures extends Fixture
 
         $manager->persist($customer);
 
+        $testCustomer = new Customer();
+        $testCustomer->setUsername('api');
+        $testCustomer->setPassword($this->hasher->hashPassword($customer, 'api'));
+        $testCustomer->setRoles(['ROLE_USER']);
+        $testCustomer->setAddress('456, Rue des Bleuets');
+        $testCustomer->setZip('750002');
+        $testCustomer->setCity('Paris');
+        $testCustomer->setCompany('Acme SARL');
+        $testCustomer->setPhone('+33 1 01 02 03 04');
+
+        $manager->persist($testCustomer);
+
 
         /**
          * CustomersUsers
          */
 
         $user1 = (new CustomerUser())
-            ->setFirstname('Teddy')
-            ->setLastname('Lelong')
-            ->setCustomer($customer)
+            ->setFirstname('Audrey')
+            ->setLastname('Blanchard')
+            ->setCustomer($testCustomer)
         ;
         $manager->persist($user1);
 
         $user2 = (new CustomerUser())
-            ->setFirstname('Aurélien')
-            ->setLastname('Vernet')
-            ->setCustomer($customer)
+            ->setFirstname('Sébastien')
+            ->setLastname('Rouet')
+            ->setCustomer($testCustomer)
         ;
         $manager->persist($user2);
+
+        $user3 = (new CustomerUser())
+            ->setFirstname('Thierry')
+            ->setLastname('Blanc')
+            ->setCustomer($customer)
+        ;
+        $manager->persist($user3);
 
         $manager->flush();
     }

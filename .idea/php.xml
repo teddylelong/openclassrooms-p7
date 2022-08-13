@@ -92,13 +92,6 @@
       <path value="$PROJECT_DIR$/app/vendor/lcobucci/jwt" />
       <path value="$PROJECT_DIR$/app/vendor/lcobucci/clock" />
       <path value="$PROJECT_DIR$/app/vendor/namshi/jose" />
-      <path value="$PROJECT_DIR$/app/vendor/guzzlehttp/psr7" />
-      <path value="$PROJECT_DIR$/app/vendor/guzzlehttp/promises" />
-      <path value="$PROJECT_DIR$/app/vendor/guzzlehttp/guzzle" />
-      <path value="$PROJECT_DIR$/app/vendor/psr/http-client" />
-      <path value="$PROJECT_DIR$/app/vendor/psr/http-message" />
-      <path value="$PROJECT_DIR$/app/vendor/psr/http-factory" />
-      <path value="$PROJECT_DIR$/app/vendor/ralouphie/getallheaders" />
     </include_path>
   </component>
   <component name="PhpProjectSharedConfiguration" php_language_level="7.4">

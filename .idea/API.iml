@@ -96,13 +96,6 @@
       <excludeFolder url="file://$MODULE_DIR$/app/vendor/lcobucci/jwt" />
       <excludeFolder url="file://$MODULE_DIR$/app/vendor/lcobucci/clock" />
       <excludeFolder url="file://$MODULE_DIR$/app/vendor/namshi/jose" />
-      <excludeFolder url="file://$MODULE_DIR$/app/vendor/guzzlehttp/psr7" />
-      <excludeFolder url="file://$MODULE_DIR$/app/vendor/guzzlehttp/promises" />
-      <excludeFolder url="file://$MODULE_DIR$/app/vendor/guzzlehttp/guzzle" />
-      <excludeFolder url="file://$MODULE_DIR$/app/vendor/psr/http-client" />
-      <excludeFolder url="file://$MODULE_DIR$/app/vendor/psr/http-message" />
-      <excludeFolder url="file://$MODULE_DIR$/app/vendor/psr/http-factory" />
-      <excludeFolder url="file://$MODULE_DIR$/app/vendor/ralouphie/getallheaders" />
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
