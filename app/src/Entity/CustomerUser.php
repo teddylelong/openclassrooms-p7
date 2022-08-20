@@ -74,7 +74,7 @@ class CustomerUser
      *
      * @Groups({"customer:read"})
      */
-    private $id;
+    private int $id;
 
     /**
      * Le prénom de l'utilisateur
